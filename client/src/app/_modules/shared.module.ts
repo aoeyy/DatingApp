@@ -11,7 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
     BsDropdownModule.forRoot(), 
     ToastrModule.forRoot({
       //makes the toast notification appear at button right
-      positionClass: 'toast-button-right'
+      positionClass: 'toast-bottom-right'
     })
   ],
 

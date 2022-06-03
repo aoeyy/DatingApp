@@ -1,6 +1,7 @@
 <br><br><br><br>
 <div class="row">
-    <div *ngFor="let member of members" class="col-2">
+    <!--add the async pipe so that we can subscribe to our component-->
+    <div *ngFor="let member of members$ | async" class="col-2">
         <app-member-card [member]="member"></app-member-card>
     </div>
 </div>

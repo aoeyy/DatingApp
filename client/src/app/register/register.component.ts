@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, FormControl, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
@@ -14,13 +14,13 @@ export class RegisterComponent implements OnInit {
   // @Input() usersFromHomeComponent: any;
   @Output() cancelRegister = new EventEmitter();
   //model: any = {};
-  registerForm: FormGroup;
+  registerForm: UntypedFormGroup;
   maxDate: Date;
   //we get the errors back from our interceptor
   validationErrors: string[] = [];
 
 
-  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder, private router: Router) { }
+  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: UntypedFormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.initializeForm();    

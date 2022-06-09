@@ -3,4 +3,7 @@ export interface User {
     //interfaces in typescript, we can use it to specify that something is a type of something
     username: string;
     token: string;
+    photoUrl: string;
+    knownAs: string;
+    gender: string;
 }

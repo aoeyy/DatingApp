@@ -3,6 +3,11 @@ import { Member } from 'src/app/_models/member';
 import { MembersService } from 'src/app/_services/members.service';
 import {CommonModule} from '@angular/common';
 import { Observable } from 'rxjs';
+import { Pagination } from 'src/app/_models/pagination';
+import { AccountService } from 'src/app/_services/account.service';
+import { take } from 'rxjs/operators';
+import { UserParams } from 'src/app/_models/userParams';
+import { User } from 'src/app/_models/user';
 
 @Component({
   selector: 'app-member-list',
@@ -11,18 +16,39 @@ import { Observable } from 'rxjs';
 })
 export class MemberListComponent implements OnInit {
   //conventionally, we add a $ to indicate that it's an observable
-  members$: Observable<Member[]>;
+  members: Member[];
+  pagination: Pagination;
+  userParams: UserParams;
+  user: User;
+  genderList = [{ value: 'male', display: 'Males' }, { value: 'female', display: 'Females' }];
 
-  constructor(private memberService: MembersService) { }
-
-  ngOnInit(): void {
-    this.members$ = this.memberService.getMembers();
+  constructor(private memberService: MembersService, private accountService: AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user;
+      this.userParams = new UserParams(user);
+    })
   }
 
-  // loadMembers() {
-  //   this.memberService.getMembers().subscribe(members => {
-  //     this.members = members;
-  //   })
-  // }
+  ngOnInit(): void {
+    this.loadMembers();
+  }
+
+  //don't have to pipe this since it's an HTTP response which typically completes
+   loadMembers() {
+    this.memberService.getMembers(this.userParams).subscribe(response => {
+       this.members = response.result;
+       this.pagination = response.pagination;
+     })
+   }
+
+   resetFilters() {
+    this.userParams = new UserParams(this.user);
+    this.loadMembers();
+  }
+
+   pageChanged(event: any) {
+    this.userParams.pageNumber = event.page;
+    this.loadMembers();
+  }
 
 }
